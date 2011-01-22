@@ -11,6 +11,7 @@ Group:		Development/Tools
 Source0:	https://fedorahosted.org/mock/attachment/wiki/MockTarballs/%{name}-%{version}.tar.gz?format=raw
 # Source0-md5:	6a7f44a5ad8358e0111f76f4ad1234d2
 URL:		http://fedoraproject.org/wiki/Projects/Mock
+BuildRequires:	perl-base
 BuildRequires:	python-devel
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.219
