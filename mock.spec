@@ -1,30 +1,34 @@
 # TODO
-# - add system user
 # - pldize (drop usermode/consoleapps), check deps
 # - kill configure bashism
+# - bash completion subpackage
 Summary:	Builds packages inside chroots
 Name:		mock
-Version:	1.0.3
-Release:	0.1
+Version:	1.1.17
+Release:	0.3
 License:	GPL v2+
 Group:		Development/Tools
-Source0:	https://fedorahosted.org/mock/attachment/wiki/MockTarballs/%{name}-%{version}.tar.gz?format=raw
-# Source0-md5:	6a7f44a5ad8358e0111f76f4ad1234d2
-URL:		http://fedoraproject.org/wiki/Projects/Mock
+Source0:	https://fedorahosted.org/mock/raw-attachment/wiki/MockTarballs/%{name}-%{version}.tar.xz
+# Source0-md5:	a07e7fd3c212c75f9b9e640e96a7bdbe
+URL:		https://fedoraproject.org/wiki/Projects/Mock
 BuildRequires:	perl-base
 BuildRequires:	python-devel
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.219
+BuildRequires:	xz
+Requires(postun):	/usr/sbin/groupdel
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/usr/sbin/groupadd
 Requires:	bash
 Requires:	createrepo
 Requires:	pigz
-Requires:	python >= 1:2.4
-Requires:	python-ctypes
+Requires:	python >= 1:2.6
 Requires:	python-decoratortools
-Requires:	python-hashlib
 Requires:	tar
 Requires:	usermode
 Requires:	yum >= 2.4
+Requires:	yum-utils >= 1.1.9
+Provides:	group(mock)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -35,6 +39,10 @@ chroot.
 
 %prep
 %setup -q
+
+# keep for reference to build pld files
+install -d sample-configs
+mv etc/mock/{fedora,epel}-*.cfg sample-configs
 
 %build
 bash %configure
@@ -55,11 +63,16 @@ ln -s consolehelper $RPM_BUILD_ROOT%{_bindir}/mock
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-%groupadd -r mock
+%groupadd -r -g 208 mock
+
+%postun
+if [ "$1" = "0" ]; then
+	%groupremove mock
+fi
 
 %files
 %defattr(644,root,root,755)
-%doc ChangeLog
+%doc AUTHORS ChangeLog sample-configs
 %attr(755,root,root) %{_bindir}/mock
 %attr(755,root,root) %{_sbindir}/mock
 %{_mandir}/man1/mock.1*
@@ -69,12 +82,12 @@ rm -rf $RPM_BUILD_ROOT
 %config(noreplace) %{_sysconfdir}/%{name}/*.ini
 %config(noreplace) /etc/pam.d/%{name}
 %config(noreplace) /etc/security/console.apps/%{name}
-#/etc/bash_completion.d/*
+/etc/bash_completion.d/mock.bash
 
-%dir %{py_sitescriptdir}/%{name}
-%dir %{py_sitescriptdir}/%{name}/plugins
-%{py_sitescriptdir}/%{name}/plugins/*.py[co]
-%{py_sitescriptdir}/%{name}/*.py[co]
+%dir %{py_sitescriptdir}/mockbuild
+%{py_sitescriptdir}/mockbuild/*.py[co]
+%dir %{py_sitescriptdir}/mockbuild/plugins
+%{py_sitescriptdir}/mockbuild/plugins/*.py[co]
 
 # build dir
 %attr(2775, root, mock) %dir /var/lib/mock
