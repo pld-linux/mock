@@ -4,12 +4,12 @@
 # - bash completion subpackage
 Summary:	Builds packages inside chroots
 Name:		mock
-Version:	1.1.17
+Version:	1.1.38
 Release:	0.3
 License:	GPL v2+
 Group:		Development/Tools
-Source0:	https://fedorahosted.org/mock/raw-attachment/wiki/MockTarballs/%{name}-%{version}.tar.xz
-# Source0-md5:	a07e7fd3c212c75f9b9e640e96a7bdbe
+Source0:	https://git.fedorahosted.org/cgit/mock.git/snapshot//%{name}-%{version}.tar.xz
+# Source0-md5:	dc3d5c4ed6657d158a30d949f7baac88
 URL:		https://fedoraproject.org/wiki/Projects/Mock
 BuildRequires:	perl-base
 BuildRequires:	python-devel
@@ -45,6 +45,10 @@ install -d sample-configs
 mv etc/mock/{fedora,epel}-*.cfg sample-configs
 
 %build
+mkdir build
+%{__aclocal}
+%{__automake}
+%{__autoconf} --force
 bash %configure
 %{__make}
 
@@ -72,17 +76,18 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc AUTHORS ChangeLog sample-configs
+%doc sample-configs
 %attr(755,root,root) %{_bindir}/mock
+%attr(755,root,root) %{_bindir}/mockchain
 %attr(755,root,root) %{_sbindir}/mock
-%{_mandir}/man1/mock.1*
+%{_mandir}/man1/mock*.1*
 
 %dir %{_sysconfdir}/%{name}
 %config(noreplace) %{_sysconfdir}/%{name}/*.cfg
 %config(noreplace) %{_sysconfdir}/%{name}/*.ini
 %config(noreplace) /etc/pam.d/%{name}
 %config(noreplace) /etc/security/console.apps/%{name}
-/etc/bash_completion.d/mock.bash
+/etc/bash_completion.d/mock
 
 %dir %{py_sitescriptdir}/mockbuild
 %{py_sitescriptdir}/mockbuild/*.py[co]
