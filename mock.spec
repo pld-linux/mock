@@ -16,7 +16,7 @@ BuildRequires:	automake
 BuildRequires:	perl-base
 BuildRequires:	python-devel
 BuildRequires:	rpm-pythonprov
-BuildRequires:	rpmbuild(macros) >= 1.219
+BuildRequires:	rpmbuild(macros) >= 1.673
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 Requires(postun):	/usr/sbin/groupdel
@@ -52,6 +52,15 @@ Requires:	tar
 
 %description scm
 Mock SCM integration module.
+
+%package -n bash-completion-%{name}
+Summary:	bash-completion for Mock
+Group:		Applications/Shells
+Requires:	%{name}
+Requires:	bash-completion >= 2.0
+
+%description -n bash-completion-%{name}
+bash-completion for Mock.
 
 %prep
 %setup -q
@@ -112,3 +121,8 @@ fi
 
 # cache dir
 %attr(2775, root, mock) %dir /var/cache/mock
+
+%files -n bash-completion-%{name}
+%defattr(644,root,root,755)
+%{bash_compdir}/mock
+%{bash_compdir}/mockchain
