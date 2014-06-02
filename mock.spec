@@ -30,7 +30,7 @@ Requires:	tar
 Requires:	usermode
 Requires:	yum >= 2.4
 Requires:	yum-utils >= 1.1.31
-Suggests:	bash-completion-name
+Suggests:	bash-completion-%{name}
 Provides:	group(mock)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
