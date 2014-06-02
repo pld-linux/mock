@@ -4,7 +4,7 @@
 Summary:	Builds packages inside chroots
 Name:		mock
 Version:	1.1.38
-Release:	0.3
+Release:	0.4
 License:	GPL v2+
 Group:		Development/Tools
 Source0:	https://git.fedorahosted.org/cgit/mock.git/snapshot/%{name}-%{version}.tar.xz
@@ -25,7 +25,6 @@ Requires:	bash
 Requires:	createrepo
 Requires:	pigz
 Requires:	python >= 1:2.6
-Requires:	python-ctypes
 Requires:	python-decoratortools
 Requires:	tar
 Requires:	usermode
