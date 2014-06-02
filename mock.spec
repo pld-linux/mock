@@ -1,7 +1,6 @@
 # TODO
 # - pldize (drop usermode/consoleapps), check deps
 # - kill configure bashism
-# - bash completion subpackage
 Summary:	Builds packages inside chroots
 Name:		mock
 Version:	1.1.38
@@ -32,6 +31,7 @@ Requires:	tar
 Requires:	usermode
 Requires:	yum >= 2.4
 Requires:	yum-utils >= 1.1.31
+Suggests:	bash-completion-name
 Provides:	group(mock)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
