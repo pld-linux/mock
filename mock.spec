@@ -8,13 +8,16 @@ Version:	1.1.38
 Release:	0.3
 License:	GPL v2+
 Group:		Development/Tools
-Source0:	https://git.fedorahosted.org/cgit/mock.git/snapshot//%{name}-%{version}.tar.xz
+Source0:	https://git.fedorahosted.org/cgit/mock.git/snapshot/%{name}-%{version}.tar.xz
 # Source0-md5:	dc3d5c4ed6657d158a30d949f7baac88
 URL:		https://fedoraproject.org/wiki/Projects/Mock
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	perl-base
 BuildRequires:	python-devel
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.219
+BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 Requires(postun):	/usr/sbin/groupdel
 Requires(pre):	/usr/bin/getgid
@@ -23,11 +26,12 @@ Requires:	bash
 Requires:	createrepo
 Requires:	pigz
 Requires:	python >= 1:2.6
+Requires:	python-ctypes
 Requires:	python-decoratortools
 Requires:	tar
 Requires:	usermode
 Requires:	yum >= 2.4
-Requires:	yum-utils >= 1.1.9
+Requires:	yum-utils >= 1.1.31
 Provides:	group(mock)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -37,6 +41,18 @@ Mock creates chroots and builds packages in them. Its only task is to
 reliably populate a chroot and attempt to build a package in that
 chroot.
 
+%package scm
+Summary:	Mock SCM integration module
+Group:		Development/Tools
+Requires:	%{name} = %{version}-%{release}
+Requires:	cvs
+Requires:	git-core
+Requires:	subversion
+Requires:	tar
+
+%description scm
+Mock SCM integration module.
+
 %prep
 %setup -q
 
@@ -45,7 +61,7 @@ install -d sample-configs
 mv etc/mock/{fedora,epel}-*.cfg sample-configs
 
 %build
-mkdir build
+install -d build
 %{__aclocal}
 %{__automake}
 %{__autoconf} --force
@@ -59,8 +75,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %py_postclean
 
-install -d $RPM_BUILD_ROOT/var/lib/mock
-install -d $RPM_BUILD_ROOT/var/cache/mock
+install -d $RPM_BUILD_ROOT/var/{lib,cache}/%{name}
 ln -s consolehelper $RPM_BUILD_ROOT%{_bindir}/mock
 
 %clean
@@ -77,17 +92,15 @@ fi
 %files
 %defattr(644,root,root,755)
 %doc sample-configs
+%dir %{_sysconfdir}/%{name}
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/*.cfg
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/*.ini
+%config(noreplace) %verify(not md5 mtime size) /etc/pam.d/%{name}
+%config(noreplace) %verify(not md5 mtime size) /etc/security/console.apps/%{name}
 %attr(755,root,root) %{_bindir}/mock
 %attr(755,root,root) %{_bindir}/mockchain
 %attr(755,root,root) %{_sbindir}/mock
 %{_mandir}/man1/mock*.1*
-
-%dir %{_sysconfdir}/%{name}
-%config(noreplace) %{_sysconfdir}/%{name}/*.cfg
-%config(noreplace) %{_sysconfdir}/%{name}/*.ini
-%config(noreplace) /etc/pam.d/%{name}
-%config(noreplace) /etc/security/console.apps/%{name}
-/etc/bash_completion.d/mock
 
 %dir %{py_sitescriptdir}/mockbuild
 %{py_sitescriptdir}/mockbuild/*.py[co]
