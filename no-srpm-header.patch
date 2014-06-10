@@ -1,0 +1,11 @@
+--- mock-1.1.38/py/mockbuild/util.py~	2014-03-31 21:46:15.000000000 +0300
++++ mock-1.1.38/py/mockbuild/util.py	2014-06-10 15:52:00.002122289 +0300
+@@ -131,7 +131,7 @@
+ 
+ 
+ decorate(traceLog())
+-def yieldSrpmHeaders(srpms, plainRpmOk=0):
++def yieldSrpmHeaders(srpms, plainRpmOk=1):
+     ts = rpmUtils.transaction.initReadOnlyTransaction()
+     for srpm in srpms:
+         try:
