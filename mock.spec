@@ -4,7 +4,7 @@
 Summary:	Builds packages inside chroots
 Name:		mock
 Version:	1.1.38
-Release:	0.4
+Release:	0.5
 License:	GPL v2+
 Group:		Development/Tools
 Source0:	https://git.fedorahosted.org/cgit/mock.git/snapshot/%{name}-%{version}.tar.xz
@@ -111,9 +111,9 @@ fi
 %{_mandir}/man1/mock*.1*
 
 %dir %{py_sitescriptdir}/mockbuild
-%{py_sitescriptdir}/mockbuild/*.py[co]
+%{py_sitescriptdir}/mockbuild/*.py*
 %dir %{py_sitescriptdir}/mockbuild/plugins
-%{py_sitescriptdir}/mockbuild/plugins/*.py[co]
+%{py_sitescriptdir}/mockbuild/plugins/*.py*
 
 # build dir
 %attr(2775, root, mock) %dir /var/lib/mock
