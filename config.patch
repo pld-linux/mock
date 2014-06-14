@@ -1,0 +1,11 @@
+--- mock-1.1.38/./etc/mock/site-defaults.cfg~	2014-06-14 18:08:15.000000000 +0300
++++ mock-1.1.38/./etc/mock/site-defaults.cfg	2014-06-14 18:08:17.563620992 +0300
+@@ -153,7 +153,7 @@
+ #   auth  sufficient pam_succeed_if.so user ingroup mock use_uid quiet
+ # config_opts['chrootgid'] = grp.getgrnam("mock")[2]
+ 
+-# config_opts['useradd'] = '/usr/sbin/useradd -m -u %(uid)s -g %(gid)s -d %(home)s -n %(user)s' # Fedora/RedHat
++config_opts['useradd'] = '/usr/sbin/useradd -m -u %(uid)s -g %(gid)s -d %(home)s %(user)s'
+ #
+ # Security related
+ # config_opts['no_root_shells'] = False
