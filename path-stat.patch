@@ -1,0 +1,11 @@
+--- mock-1.1.38/py/mockbuild/util.py~	2014-06-14 18:08:55.000000000 +0300
++++ mock-1.1.38/py/mockbuild/util.py	2014-06-15 15:12:08.895436057 +0300
+@@ -444,7 +444,7 @@
+     return env
+ 
+ def get_fs_type(path):
+-    cmd = '/usr/bin/stat -f -L -c %%T %s' % path
++    cmd = 'stat -f -L -c %%T %s' % path
+     p = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+     p.wait()
+     return p.stdout.readline().strip()

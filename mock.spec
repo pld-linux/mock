@@ -4,13 +4,14 @@
 Summary:	Builds packages inside chroots
 Name:		mock
 Version:	1.1.38
-Release:	0.6
+Release:	0.7
 License:	GPL v2+
 Group:		Development/Tools
 Source0:	https://git.fedorahosted.org/cgit/mock.git/snapshot/%{name}-%{version}.tar.xz
 # Source0-md5:	dc3d5c4ed6657d158a30d949f7baac88
 Patch0:		no-srpm-header.patch
 Patch1:		config.patch
+Patch2:		path-stat.patch
 URL:		https://fedoraproject.org/wiki/Projects/Mock
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -67,6 +68,7 @@ bash-completion for Mock.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 # keep for reference to build pld files
 install -d sample-configs
